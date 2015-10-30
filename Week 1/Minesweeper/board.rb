@@ -30,7 +30,7 @@ class Board
       row.each do |tile|
         if tile.revealed
           print "#{tile.value},"
-        else
+        else          
           print "*,"
         end
       end
