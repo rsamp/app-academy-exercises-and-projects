@@ -1,21 +1,41 @@
+require_relative 'tile'
+
 class Board
   attr_accessor :grid
 
   def initialize
     @grid = Array.new(9) { Array.new(9) }
-    place_bombs
+    populate_grid
   end
 
   def place_bombs
     bomb_array = Array.new(10) {:bomb}
     until bomb_array.empty?
       x, y = random_pos, random_pos
-      grid[x][y] = bomb_array.shift unless grid[x][y] == :bomb
+      grid[x][y].value = bomb_array.shift unless grid[x][y].value == :bomb
     end
   end
 
+  def populate_grid
+    grid.each_with_index do |row, row_idx|
+      row.each_with_index do |col, col_idx|
+        grid[row_idx][col_idx] = Tile.new(self, [row_idx, col_idx])
+      end
+    end
+    place_bombs
+  end
+
   def render
-    grid.each { |row| p row }
+    grid.each do |row|
+      row.each do |tile|
+        if tile.revealed
+          print "#{tile.value},"
+        else
+          print "*,"
+        end
+      end
+      puts ""
+    end
   end
 
   def random_pos
