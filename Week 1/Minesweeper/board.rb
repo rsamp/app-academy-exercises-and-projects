@@ -2,12 +2,14 @@ class Board
 
   def initialize
     @grid = Array.new(9) { Array.new(9) }
+    place_bombs
   end
 
   def place_bombs
     bomb_array = Array.new(10) {:bomb}
-    10.times do
-      @grid.sample.sample = bomb_array.shift
+    until bomb_array.empty?
+      bomb_spot = @grid.sample.sample
+      bomb_spot = bomb_array.shift unless bomb_spot == :bomb
     end
   end
 
