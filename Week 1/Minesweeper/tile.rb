@@ -26,6 +26,8 @@ class Tile
     self.revealed = true
     if neighbor_bomb_count > 0
       @value = neighbor_bomb_count
+    else
+      @value = "_"
     end
 
   end
@@ -45,7 +47,7 @@ class Tile
   end
 
   def potential_neighbors
-    POTENTIAL_NEIGHBORS_DIFF.map { |diff| board[[pos[0] + diff[0], pos[1] + diff[1]]]}
+    POTENTIAL_NEIGHBORS_DIFF.map { |diff| board[[self.pos[0] + diff[0], self.pos[1] + diff[1]]]}
   end
 
   def inspect
