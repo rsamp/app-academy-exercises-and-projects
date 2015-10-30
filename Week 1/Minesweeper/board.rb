@@ -14,6 +14,10 @@ class Board
     end
   end
 
+  def render
+    grid.each { |row| p row }
+  end
+
   def random_pos
     rand(9)
   end
