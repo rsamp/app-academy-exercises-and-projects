@@ -1,29 +1,29 @@
 require_relative 'board'
 
 class Tile
-  attr_reader :pos, :board, :revealed
-  attr_accessor :value
+  attr_reader :pos, :board
+  attr_accessor :value, :revealed
 
-  POTENTIAL_NEIGHBORS = [[0,1],
-                         [0,-1],
-                         [-1,0],
-                         [1,0],
-                         [1,1],
-                         [1,-1],
-                         [-1,1],
-                         [-1,-1]]
+  POTENTIAL_NEIGHBORS_DIFF = [[0,1],
+                             [0,-1],
+                             [-1,0],
+                             [1,0],
+                             [1,1],
+                             [1,-1],
+                             [-1,1],
+                             [-1,-1]]
 
   def initialize(board, pos)
     @value = nil
-    @revealed = true
+    @revealed = false
     @board = board
     @pos = pos
   end
 
   def reveal
     raise "You blew up" if value == :bomb
-    raise "Already revealed" if revealed
-    revealed = true
+    puts "Already revealed" if revealed
+    self.revealed = true
     if neighbor_bomb_count > 0
       @value = neighbor_bomb_count
     end
@@ -37,10 +37,15 @@ class Tile
   def neighbor_bomb_count
     bomb_count = 0
     neighbors.each { |neighbor| bomb_count += 1 if neighbor.value == :bomb }
+    bomb_count
   end
 
   def neighbors
-    POTENTIAL_NEIGHBORS.select { |neighbor| within_bounds?(neighbor) }
+    potential_neighbors.select { |neighbor| within_bounds?(neighbor.pos) }
+  end
+
+  def potential_neighbors
+    POTENTIAL_NEIGHBORS_DIFF.map { |diff| board[[pos[0] + diff[0], pos[1] + diff[1]]]}
   end
 
   def inspect
