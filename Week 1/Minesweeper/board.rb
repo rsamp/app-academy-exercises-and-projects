@@ -1,4 +1,5 @@
 class Board
+  attr_accessor :grid
 
   def initialize
     @grid = Array.new(9) { Array.new(9) }
@@ -8,9 +9,23 @@ class Board
   def place_bombs
     bomb_array = Array.new(10) {:bomb}
     until bomb_array.empty?
-      bomb_spot = @grid.sample.sample
-      bomb_spot = bomb_array.shift unless bomb_spot == :bomb
+      x, y = random_pos, random_pos
+      grid[x][y] = bomb_array.shift unless grid[x][y] == :bomb
     end
+  end
+
+  def random_pos
+    rand(9)
+  end
+
+  def [](pos)
+    x, y = pos
+    grid[x][y]
+  end
+
+  def []=(pos, value)
+    x, y = pos
+    grid[x][y] = value
   end
 
 end
