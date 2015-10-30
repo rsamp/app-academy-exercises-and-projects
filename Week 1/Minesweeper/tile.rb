@@ -1,7 +1,8 @@
 require_relative 'board'
 
 class Tile
-  attr_reader :pos, :board
+  attr_reader :pos, :board, :revealed
+  attr_accessor :value
   def initialize(board, pos)
     @value = nil
     @revealed = false
@@ -10,7 +11,7 @@ class Tile
   end
 
   def reveal
-
+    puts "You blew up" if value == :bomb
   end
 
   def neighbor_bomb_count
