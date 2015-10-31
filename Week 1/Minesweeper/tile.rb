@@ -24,7 +24,7 @@ class Tile
 
   def reveal
     # debugger
-    raise "You blew up" if value == :bomb
+    puts "You blew up. Try again" if value == :bomb
     # puts "Already revealed" if revealed
     self.revealed = true
     if neighbor_bomb_count > 0
