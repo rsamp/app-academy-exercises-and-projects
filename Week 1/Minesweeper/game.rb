@@ -8,13 +8,15 @@ class Game
   end
 
   def play
-    board.render
     until won?
+      system("clear")
+      board.render
       prompt
       spot = gets.chomp.split.map(&:to_i)
       board[spot].reveal
-      board.render
     end
+    board.render
+    puts "You won!"
   end
 
   def prompt
@@ -29,7 +31,6 @@ class Game
     end
     true
   end
-
 end
 
 if __FILE__ == $PROGRAM_NAME
