@@ -1,3 +1,5 @@
+require 'byebug'
+
 require_relative 'board'
 
 class Tile
@@ -21,13 +23,15 @@ class Tile
   end
 
   def reveal
+    # debugger
     raise "You blew up" if value == :bomb
-    puts "Already revealed" if revealed
+    # puts "Already revealed" if revealed
     self.revealed = true
     if neighbor_bomb_count > 0
       @value = neighbor_bomb_count
     else
       @value = "_"
+      neighbors.each { |neighbor| neighbor.reveal unless neighbor.revealed}
     end
 
   end
@@ -42,12 +46,20 @@ class Tile
     bomb_count
   end
 
+  def check_neighbors
+    potential_neighbors.select { |neighbor| within_bounds?(neighbor) }
+  end
+
   def neighbors
-    potential_neighbors.select { |neighbor| within_bounds?(neighbor.pos) }
+    neighbors = []
+    check_neighbors.each do |neighbor|
+      neighbors << board[neighbor]
+    end
+    neighbors
   end
 
   def potential_neighbors
-    POTENTIAL_NEIGHBORS_DIFF.map { |diff| board[[self.pos[0] + diff[0], self.pos[1] + diff[1]]]}
+    POTENTIAL_NEIGHBORS_DIFF.map { |diff| [self.pos[0] + diff[0], self.pos[1] + diff[1]]}
   end
 
   def inspect
