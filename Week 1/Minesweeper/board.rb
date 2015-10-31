@@ -9,7 +9,7 @@ class Board
   end
 
   def place_bombs
-    bomb_array = Array.new(10) {:bomb}
+    bomb_array = Array.new(1) {:bomb}
     until bomb_array.empty?
       x, y = random_pos, random_pos
       grid[x][y].value = bomb_array.shift unless grid[x][y].value == :bomb
@@ -30,7 +30,7 @@ class Board
       row.each do |tile|
         if tile.revealed
           print "#{tile.value},"
-        else          
+        else
           print "*,"
         end
       end
