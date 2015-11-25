@@ -1,0 +1,22 @@
+<h1><%= @goal.description %></h1>
+<p>
+  <%= @goal.privacy_status %>
+  <%= @goal.completion_status %>
+</p>
+
+<% if @goal.user == current_user %>
+  <% if @goal.completion_status == "incomplete" %>
+    <form action= "<%= goal_url(@goal) %>" method="post">
+      <input type="hidden" name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="PATCH">
+      <input type="hidden" name="goal[completion_status]" value="complete">
+      <input type="submit" value="mark as completed">
+    </form>
+  <% end %>
+  <%= link_to("Edit Goal", edit_goal_url) %>
+  <br>
+  <%= link_to("Delete Goal", goal_url(@goal), method: :delete) %>
+<% end %>
+<br>
+<%= link_to("Goals Page", goals_url) %>

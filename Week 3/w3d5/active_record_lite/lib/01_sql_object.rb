@@ -54,7 +54,7 @@ class SQLObject
   end
 
   def self.find(id)
-    cat = DBConnection.execute(<<-SQL, id: id)
+    obj = DBConnection.execute(<<-SQL, id: id)
       SELECT
         *
       FROM
@@ -62,8 +62,8 @@ class SQLObject
       WHERE
         id = :id
     SQL
-    nil if cat.length == 0
-    cat.first
+    return nil if obj.empty?
+    self.new(obj.first)
   end
 
   def initialize(params = {})
@@ -79,26 +79,35 @@ class SQLObject
   end
 
   def attribute_values
-    # ...
+    self.class.columns.map { |column| self.send("#{column}") }
   end
 
   def insert
-    # ...
+    col_names = self.class.columns.join(", ")
+    question_marks = []
+    self.class.columns.length.times { question_marks << "?" }
+    DBConnection.execute(<<-SQL, attribute_values)
+      INSERT INTO
+        #{self.class.table_name} (#{col_names})
+      VALUES
+        (#{question_marks.join(", ")})
+    SQL
+    self.id = DBConnection.last_insert_row_id
   end
 
   def update
-    # ...
+    attr_names = self.class.columns.map { |attr_name| "#{attr_name} = ?"}.join(", ")
+    DBConnection.execute(<<-SQL, attribute_values)
+      UPDATE
+        #{self.class.table_name}
+      SET
+        #{attr_names}
+      WHERE
+        id = #{attribute_values.first}
+    SQL
   end
 
   def save
-    # ...
+    attribute_values.first.nil? ? insert : update
   end
 end
-
-
-# DBConnection.execute(<<-SQL, table: self, column: column, attribute: attribute)
-#   INSERT INTO
-#     :table (:column)
-#   VALUES
-#     :attribute
-# SQL
