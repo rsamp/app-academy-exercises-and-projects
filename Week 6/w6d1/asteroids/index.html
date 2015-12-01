@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id="game-canvas" width="500" height="500"></canvas>
+    <script type="text/javascript" src="lib/utils.js"></script>
+    <script type="text/javascript" src="lib/movingObject.js"></script>
+    <script type="text/javascript" src="lib/asteroid.js"></script>
+    <script type="text/javascript" src="lib/bullet.js"></script>
+    <script type="text/javascript" src="lib/ship.js"></script>
+    <script type="text/javascript" src="lib/game.js"></script>
+    <script type="text/javascript" src="lib/gameView.js"></script>
+    <script>
+      var canvasEl = document.getElementById("game-canvas");
+      var game = new Asteroids.Game();
+      var gameView = new Asteroids.GameView(game,
+          canvasEl.getContext("2d"));
+      gameView.start();
+      //   ).start();
+      // var mo = new Asteroids.MovingObject([10,10], [5, 15], 20, "#ff0000");
+      //
+      // mo.draw(canvasEl.getContext("2d"));
+
+      // var asteroid = new Asteroids.Asteroid([20, 20])
+      // var asteroid2 = new Asteroids.Asteroid([60, 20])
+      // asteroid.draw(canvasEl.getContext("2d"));
+      // asteroid2.draw(canvasEl.getContext("2d"));
+      // game.addAsteroids();
+      // game.draw(canvasEl.getContext("2d"));
+      </script>
+  </body>
+</html>
